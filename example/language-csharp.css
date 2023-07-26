@@ -1,0 +1,38 @@
+.code-comment {
+    color: #5c6370;
+    font-style: italic;
+}
+
+.code-keyword {
+    color: #fb7385;
+}
+
+.code-identifier {
+    color: unset;
+}
+
+.code-number {
+    color: #ce95b8;
+}
+
+.code-brackets {
+    font-weight: bold;
+}
+
+.code-regex {
+    color: #e5bc66;
+}
+
+/* .code-space {} */
+
+.code-string {
+    color: #e5bc66;
+}
+
+.code-function-call {
+    color: #98c379;
+}
+
+.code-unknown {
+    text-decoration: dotted;
+}

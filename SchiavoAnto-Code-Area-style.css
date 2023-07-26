@@ -1,0 +1,108 @@
+#sa__editor-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#sa__editor {
+    color: transparent;
+    caret-color: #dcdcdc;
+    outline: none;
+}
+
+#sa__editor::selection {
+    color: transparent;
+    background-color: #40375e;
+}
+
+#sa__editor, #sa__editor-code {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    resize: none;
+    background-color: #212029;
+    white-space: pre;
+    overflow: auto;
+    font-size: 1em;
+}
+
+#sa__editor::-webkit-scrollbar, #sa__editor-code::-webkit-scrollbar {
+    background-color: transparent;
+    width: 0.75rem;
+    height: 0.75rem;
+    cursor: default !important;
+}
+
+#sa__editor::-webkit-scrollbar-button, #sa__editor-code::-webkit-scrollbar-button {
+    display: none;
+}
+
+#sa__editor::-webkit-scrollbar-track, #sa__editor-code::-webkit-scrollbar-track {
+    background-color: #3f3e49;
+    margin: 0;
+    padding: 0;
+}
+
+#sa__editor::-webkit-scrollbar-thumb, #sa__editor-code::-webkit-scrollbar-thumb {
+    background-color: #676674;
+    border-radius: calc(0.75rem / 2);
+    margin: 0;
+    padding: 0;
+}
+
+#sa__editor::-webkit-scrollbar-corner, #sa__editor-code::-webkit-scrollbar-corner {
+    display: none;
+}
+
+#sa__editor-code {
+    pointer-events: none;
+    background-color: transparent;
+    color: #dcdcdc;
+}
+
+/* Default code styling */
+.code-comment {
+    color: #1b6b1b;
+    font-style: italic;
+}
+
+.code-keyword {
+    color: #6093d6;
+}
+
+.code-identifier {
+    color: #886ca3;
+}
+
+.code-number {
+    color: #6cc799;
+}
+
+.code-brackets {
+    font-weight: bold;
+}
+
+.code-regex {
+    color: #dd9747;
+    font-weight: bold;
+}
+
+/* .code-space {} */
+
+.code-string {
+    color: #c58338;
+}
+
+.code-function-call {
+    color: #cfc85e;
+}
+
+.code-unknown {
+    text-decoration: dotted;
+}
