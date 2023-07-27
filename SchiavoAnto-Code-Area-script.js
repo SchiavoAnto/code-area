@@ -4,6 +4,7 @@ let sa__editorContainer = null;
 let sa__editorLineNumbers = null;
 let sa__editor = null;
 let sa__editorCode = null;
+let sa__hasLineNumbers = true;
 
 const COMMENT = 'com'; // Comments
 const KEYWORD = 'key'; // Keyword
@@ -132,6 +133,7 @@ function getLineCount() {
 }
 
 function updateLineNumbers() {
+    if (!sa__hasLineNumbers) return;
     sa__editorLineNumbers.innerHTML = "";
     const lineCount = getLineCount();
     for (let i = 1; i <= lineCount; i++) {
@@ -142,6 +144,7 @@ function updateLineNumbers() {
 }
 
 function createCodeArea(parentCssSelector, defaultContent = "", additionalTextAreaAttributes = "", showLineNumbers = true) {
+    sa__hasLineNumbers = showLineNumbers;
     const lineNumbersHtml = showLineNumbers ? `<div id="sa__editor-line-numbers"></div>` : "<div></div>"; // Empty div to keep grid structure
 
     const area =
@@ -160,7 +163,7 @@ function createCodeArea(parentCssSelector, defaultContent = "", additionalTextAr
 
     parent.innerHTML += area;
     sa__editorContainer = document.querySelector("#sa__editor-container");
-    sa__editorLineNumbers = document.querySelector("#sa__editor-line-numbers");
+    if (sa__hasLineNumbers) sa__editorLineNumbers = document.querySelector("#sa__editor-line-numbers");
     sa__editor = document.querySelector("#sa__editor");
     sa__editorCode = document.querySelector("#sa__editor-code");
 
@@ -168,12 +171,18 @@ function createCodeArea(parentCssSelector, defaultContent = "", additionalTextAr
         throw new Error("createCodeArea: failed to create sa__editor and/or sa__editorCode.");
     }
 
-    sa__editor.addEventListener('input', () => {
+    sa__editor.addEventListener('input', (e) => {
+        if (typeof sa__onInputBefore === "function") {
+            sa__onInputBefore(e);
+        }
         highlightAndUpdateLines();
+        if (typeof sa__onInputAfter === "function") {
+            sa__onInputAfter(e);
+        }
     });
     sa__editor.addEventListener('scroll', () => {
         sa__editorCode.scrollTop = sa__editor.scrollTop;
         sa__editorCode.scrollLeft = sa__editor.scrollLeft;
-        sa__editorLineNumbers.scrollTop = sa__editor.scrollTop;
+        if (sa__hasLineNumbers) sa__editorLineNumbers.scrollTop = sa__editor.scrollTop;
     });
 }
