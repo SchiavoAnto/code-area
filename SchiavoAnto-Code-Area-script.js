@@ -1,5 +1,7 @@
 // From https://github.com/lrsjng/lolight and modified.
 // The license file is included, taken from https://github.com/lrsjng/lolight/blob/73e5ef35a71f86f5f1c5146d5b0823eb0fc64547/README.md
+let sa__editorContainer = null;
+let sa__editorLineNumbers = null;
 let sa__editor = null;
 let sa__editorCode = null;
 
@@ -11,6 +13,7 @@ const PARENTHESIS = 'pct'; // Parenthesis, brackets, curly braces
 const REGEX = 'rex'; // Regex
 const FUNCALL = 'funcall'; // Function call
 const SPACE = 'spc'; // Space
+const NEWLINE = 'nln'; // Newline
 const STRING = 'str'; // String
 const UNKNOWN = 'unk'; // Unknown
 
@@ -75,6 +78,11 @@ function highlight(debug = false) {
     }
 }
 
+function highlightAndUpdateLines(debug = false) {
+    highlight(debug);
+    updateLineNumbers();
+}
+
 function tokenize(text) {
     if (typeof text !== 'string') {
         throw new Error('tok: no string');
@@ -115,14 +123,34 @@ function tokenize(text) {
             break;
         }
     }
+    tokens.push([NEWLINE, "&nbsp;"]);
     return tokens;
 }
 
-function createCodeArea(parentCssSelector, defaultContent = "", additionalTextAreaAttributes = "") {
+function getLineCount() {
+    return sa__editor.value.split("\n").length;
+}
+
+function updateLineNumbers() {
+    sa__editorLineNumbers.innerHTML = "";
+    const lineCount = getLineCount();
+    for (let i = 1; i <= lineCount; i++) {
+        sa__editorLineNumbers.innerHTML += `
+        <span class="sa__editor-line-number">${i}</span>
+        `;
+    }
+}
+
+function createCodeArea(parentCssSelector, defaultContent = "", additionalTextAreaAttributes = "", showLineNumbers = true) {
+    const lineNumbersHtml = showLineNumbers ? `<div id="sa__editor-line-numbers"></div>` : "<div></div>"; // Empty div to keep grid structure
+
     const area =
-    `<div id="sa__editor-area">
-        <textarea id="sa__editor" spellcheck="false" autocapitalize="false" ${additionalTextAreaAttributes}>${defaultContent}</textarea>
-        <pre id="sa__editor-code"></pre>
+    `<div id="sa__editor-container">
+        ${lineNumbersHtml}
+        <div id="sa__editor-area">
+            <textarea id="sa__editor" spellcheck="false" autocapitalize="false" ${additionalTextAreaAttributes}>${defaultContent}</textarea>
+            <pre id="sa__editor-code"></pre>
+        </div>
     </div>`;
 
     const parent = document.querySelector(parentCssSelector);
@@ -131,6 +159,8 @@ function createCodeArea(parentCssSelector, defaultContent = "", additionalTextAr
     }
 
     parent.innerHTML += area;
+    sa__editorContainer = document.querySelector("#sa__editor-container");
+    sa__editorLineNumbers = document.querySelector("#sa__editor-line-numbers");
     sa__editor = document.querySelector("#sa__editor");
     sa__editorCode = document.querySelector("#sa__editor-code");
 
@@ -139,10 +169,11 @@ function createCodeArea(parentCssSelector, defaultContent = "", additionalTextAr
     }
 
     sa__editor.addEventListener('input', () => {
-        highlight();
+        highlightAndUpdateLines();
     });
     sa__editor.addEventListener('scroll', () => {
         sa__editorCode.scrollTop = sa__editor.scrollTop;
         sa__editorCode.scrollLeft = sa__editor.scrollLeft;
+        sa__editorLineNumbers.scrollTop = sa__editor.scrollTop;
     });
 }
