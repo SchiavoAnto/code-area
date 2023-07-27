@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a problem with the library
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Bug report
+            
+        Important note:
+        Before submitting a bug report, please search in the issues list to see if the problem was already reported.
+
+  - type: dropdown
+    attributes:
+      label: Type
+      options:
+        - Console error
+        - Unexpected behaviour
+        - Performance
+        - Cosmetic
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Bug description
+      description: Explain the problem.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots/Videos
+      description: Upload screenshots and/or videos regarding the problem.
+      placeholder: Drag and drop screenshots/videos in the box.
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Version
+      description: Which version of the library were you using when you encountered the problem?
+    validations:
+      required: true
