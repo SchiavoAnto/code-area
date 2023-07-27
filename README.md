@@ -14,7 +14,8 @@ In the HTML page you want to have the code area, include the script and the CSS 
 <link rel="stylesheet" href="lib/SchiavoAnto-Code-Area-style.css">
 ```
 
-There is no guarantee that JS scripts will work without the `defer` attribute.
+There is no guarantee that JS scripts will work without the `defer` attribute.  
+Also, if you can `defer` your page script, great, otherwise it's recommended to create another script (with the `defer` attribute) just to setup the Code Area.
 
 ### Language support
 
@@ -33,7 +34,7 @@ To add support for a language, create a JavaScript file and a CSS file and inclu
 The JavaScript file should contain two main things:  
 
 1. Definition of an array of strings representing every possible language keyword;
-2. An assignment to a variable called `TOKEN_RES`, setting its value to an array of arrays, each of which contains the type of token to represent and the Regular Expression to match.  
+2. An assignment to a variable called `TOKEN_RES`, setting its value to an array of arrays, each of which contains the type of token (declared in `SchiavoAnto-Code-Area-script.js`) to represent and the Regular Expression to match.  
 
 For example, a script `language-csharp.js` could look like this:
 
@@ -127,19 +128,19 @@ Using the example C# JavaScript file and the full CSS example, the result is thi
 
 After optionally including language specific JavaScript and CSS, you can create your Code Area.
 
-To create a Code Area, after including `SchiavoAnto-Code-Area-script.js`, you can call the function `createCodeArea()`.  
-This function takes as parameters:  
+To create a Code Area, you can call the function `createCodeArea()`.  
+This function takes these parameters:  
 1. `parentCssSelector`, which should be a string representing a CSS3 selector of the element that will be containing the Code Area.
 2. `defaultContent` (optional, default = `""`), which should be a string containing the default content of the textarea;
-3. `additionalTextAreaAttributes` (optional, default = `""`), which should be a string representing additional HTML attributes to add to the raw `<textarea>` element.
+3. `additionalTextAreaAttributes` (optional, default = `""`), which should be a string representing additional HTML attributes to add to the raw `<textarea>` element;
+4. `showLineNumbers` (optional, default = `false`), that specifies if the Code Area should have line numbers or not.
 
 By default, the `<textarea>` element has these attributes set:  
 `id="sa__editor" spellcheck="false" autocapitalize="false"`.
 
 The main script will highlight the code every time it changes by calling the function `highlight()` on every textarea's `input` event.  
 
-If you can `defer` your page script, great, otherwise it's recommended to create another script (with the `defer` attribute) just to setup the Code Area.
-In your page script you can call the `highlight()` function on the document's `DOMContentLoaded` event if you want to have the code highlighted on load, like this:
+In your page script you can call the `highlight()` (`highlightAndUpdateLines()` to update line numbers too) function on the document's `DOMContentLoaded` event if you want to have the code highlighted on load, like this:
 
 ```html
 <!DOCTYPE html>
@@ -160,6 +161,30 @@ document.addEventListener("DOMContentLoaded", () => {
     highlight();
 });
 ```
+
+If you need some custom logic on the textarea's `input` event, you can declare two functions in your setup script called `sa__onInputBefore` and `sa__onInputAfter`. They must take in as an argument the `input` event object.  
+
+For example, this would be correct:
+
+```javascript
+createCodeArea("body", "Default content");
+
+document.addEventListener("DOMContentLoaded", () => {
+    highlightAndUpdateLines();
+});
+
+function sa__onInputBefore(event) {
+    console.log("Before input:", event);
+}
+
+function sa__onInputAfter(event) {
+    console.log("After input:", event);
+}
+```
+
+## Found bugs or need help?
+
+You can open an issue on GitHub and I will respond as soon as possible!
 
 ## License
 
