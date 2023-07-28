@@ -1,5 +1,8 @@
 # SchiavoAnto's Code Area - Lightweight Code Editor Component
 
+[![CodeFactor](https://www.codefactor.io/repository/github/schiavoanto/code-area/badge)](https://www.codefactor.io/repository/github/schiavoanto/code-area)
+[![GitHub release](https://img.shields.io/github/release/schiavoanto/code-area.svg)](https://github.com/schiavoanto/code-area/releases/latest)
+
 Client side JavaScript scripts and CSS files to create an interactive and live syntax highlighted code area, starting from a standard HTML `textarea` component.  
 This project is based on [lrsjng/lolight](https://github.com/lrsjng/lolight).
 
