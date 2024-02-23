@@ -147,6 +147,7 @@ In your page script you can call the `highlight()` (`highlightAndUpdateLines()` 
 
 ```html
 <!DOCTYPE html>
+<html>
     <head>
         <title>Example</title>
         <script src="pagescript.js" defer></script>
